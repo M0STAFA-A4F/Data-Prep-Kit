@@ -21,9 +21,13 @@ class DataPrepKit:
     
     
     def __get_data_type(self, df_column):
+        s = len(df_column)
+        
         dtype = ''
 
-        if str(type(df_column.describe().dtype)) == "<class 'numpy.dtype[object_]'>":
+        if str(type(df_column[0])) == "<class 'bool'>" or str(type(df_column[s//2])) == "<class 'bool'>" or str(type(df_column[s-1])) == "<class 'bool'>":
+            dtype = 'bool'
+        elif str(type(df_column.describe().dtype)) == "<class 'numpy.dtype[object_]'>":
             dtype = 'string'
         elif str(type(df_column.sum())) == "<class 'numpy.int64'>":
             dtype = 'int'
@@ -62,7 +66,7 @@ class DataPrepKit:
             data.append(len(unique))
             data.append(top)
             data.append(freq)
-            data.append('NaN' if self.__get_data_type(df[col]) == 'string' else df_describe['mean'])
+            data.append('NaN' if self.__get_data_type(df[col]) == 'string' or self.__get_data_type(df[col]) == 'bool' else df_describe['mean'])
             data.append(self.__get_data_type(df[col]))
 
             all_df.insert(loc=len(all_df.columns), column=col, value=data)
@@ -182,4 +186,5 @@ class DataPrepKit:
         df_column_copy = df_column_copy.bfill()
 
         return df_column_copy
+        
     
