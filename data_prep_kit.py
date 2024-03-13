@@ -66,7 +66,7 @@ class DataPrepKit:
             data.append(len(unique))
             data.append(top)
             data.append(freq)
-            data.append('NaN' if self.__get_data_type(df[col]) == 'string' or self.__get_data_type(df[col]) == 'bool' else df_describe['mean'])
+            data.append(df_describe['mean'] if self.__get_data_type(df[col]) == 'int' or self.__get_data_type(df[col]) == 'float' else '-')
             data.append(self.__get_data_type(df[col]))
 
             all_df.insert(loc=len(all_df.columns), column=col, value=data)
